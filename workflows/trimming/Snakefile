@@ -1,0 +1,20 @@
+import os
+from snakemake.utils import min_version
+min_version('6.13.1')
+
+configfile: '../config.yaml'
+
+rule all:
+    input:
+        os.path.join(config['base_directory'], config['data_dir_fastq'], '11N_1.raw.fq.gz'),
+        os.path.join(config['base_directory'], config['data_dir_fastq'], '11N_2.raw.fq.gz')
+
+rule download_fastq:
+    output:
+        os.path.join(config['base_directory'], config['data_dir_fastq'], '11N_1.raw.fq.gz'),
+        os.path.join(config['base_directory'], config['data_dir_fastq'], '11N_2.raw.fq.gz'),
+    params:
+        download_links = config['download_links'],
+    run:
+        for link, outputfile in zip(params.download_links, output):
+            shell('curl -o {outputfile} {link}')

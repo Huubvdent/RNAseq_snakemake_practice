@@ -1,0 +1,28 @@
+import os
+import pandas as pd
+from snakemake.utils import min_version
+min_version('6.13.1')
+
+configfile: '../config.yaml'
+
+prostate_acc = pd.read_csv(os.path.join(config['base_dir'], config['prostate_acc']), sep = '\t')
+id = prostate_acc['sample_title']
+acc = prostate_acc['run_accession']
+
+rule all:
+    input:
+        file = expand(os.path.join(config['base_dir'], config['data_dir_fastq'], '{file}.raw.fq.gz'), file = id)
+
+rule download_fastq_prostate:
+    output:
+        os.path.join(config['base_dir'], config['data_dir_fastq'], '{file}.raw.fq.gz'),
+    params:
+        download_link = config['download_link'],
+        base_dir = config['base_dir'],
+        data_dir = config['data_dir_fastq'],
+    threads:1,
+    run:
+        for id_num, acc_num in zip(id, acc):
+            acc_num_base = acc_num[:6]
+            for number in ['1', '2']:
+                shell('wget {params.download_link}/{acc_num_base}/{acc_num}/{id_num}_{number}.raw.fq.gz -O {params.base_dir}/{params.data_dir}/{id_num}_{number}.raw.fq.gz')
