@@ -1,16 +1,0 @@
---2024-02-25 20:35:27--  ftp://ftp.sra.ebi.ac.uk/vol1/run/ERR031/ERR031031/3N_2.raw.fq.gz
-           => ‘/Users/huubvdent/Documents/Snakemake_practice/data/fastq/3N_2.raw.fq.gz’
-Resolving ftp.sra.ebi.ac.uk (ftp.sra.ebi.ac.uk)... 193.62.193.165
-Connecting to ftp.sra.ebi.ac.uk (ftp.sra.ebi.ac.uk)|193.62.193.165|:21... connected.
-Logging in as anonymous ... Logged in!
-==> SYST ... done.    ==> PWD ... done.
-==> TYPE I ... done.  ==> CWD (1) /vol1/run/ERR031/ERR031031 ... done.
-==> SIZE 3N_2.raw.fq.gz ... 2262498018
-==> PASV ... done.    ==> RETR 3N_2.raw.fq.gz ... done.
-Length: 2262498018 (2.1G) (unauthoritative)
-
-3N_2.raw.fq.gz        1%[                    ]  24.23M   716 B/s    eta 10d 5h 3N_2.raw.fq.gz        1%[                    ]  25.40M   837 B/s    in 2h 47m  
-
-2024-02-25 23:22:39 (2.59 KB/s) - Data connection: Connection reset by peer; Data transfer aborted.
-Retrying.
-

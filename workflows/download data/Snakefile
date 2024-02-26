@@ -6,12 +6,12 @@ min_version('6.13.1')
 configfile: '../config.yaml'
 
 prostate_acc = pd.read_csv(os.path.join(config['base_dir'], config['prostate_acc']), sep = '\t')
-id = prostate_acc['sample_title']
-acc = prostate_acc['run_accession']
+id = prostate_acc['sample_title'][:12]
+acc = prostate_acc['run_accession'][:12]
 
 rule all:
     input:
-        file = expand(os.path.join(config['base_dir'], config['data_dir_fastq'], '{file}.raw.fq.gz'), file = id)
+        file = expand(os.path.join(config['base_dir'], config['data_dir_fastq'], '{file}.fq.gz'), file = id)
 
 rule download_fastq_prostate:
     output:

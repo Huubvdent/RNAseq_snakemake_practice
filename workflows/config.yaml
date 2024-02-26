@@ -3,6 +3,6 @@ download_link:  "ftp://ftp.sra.ebi.ac.uk/vol1/run"
 base_dir: "/Users/huubvdent/Documents/Snakemake_practice"
 
 data_dir_fastq: "data/fastq"
-data_dir_fastqc: "data/fastqc"
+data_dir_qc: "data/qc"
 
 prostate_acc: "static/prostate_acc.txt"

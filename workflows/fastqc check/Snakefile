@@ -6,19 +6,24 @@ configfile: '../config.yaml'
 
 rule all:
     input:
-        
+        os.path.join(config['base_dir'], config['data_dir_qc'], 'qc_report_fastq.html')
 
-rule fastqc:
+rule qualityControl:
     input:
-        os.path.join(config['base_directory'], config['data_dir_fastq'], '{sampleid}N_1.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastq'], '{sampleid}N_2.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastq'], '{sampleid}T_1.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastq'], '{sampleid}T_2.raw.fq.gz'),
+        os.path.join(config['base_dir'], config['data_dir_fastq'], '{file}.raw.fq.gz')
     output:
-        os.path.join(config['base_directory'], config['data_dir_fastqc'], '{sampleid}N_1.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastqc'], '{sampleid}N_2.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastqc'], '{sampleid}T_1.raw.fq.gz'),
-        os.path.join(config['base_directory'], config['data_dir_fastqc'], '{sampleid}T_2.raw.fq.gz'),
-    run:
-        for link, outputfile in zip(params.download_links, output):
-            shell('curl -o {outputfile} {link}')
+        os.path.join(config['base_dir'], config['data_dir_qc'], '{file}_fastqc.html')
+    params:
+        outputpath = os.path.join(config['base_dir'], config['data_dir_qc'])
+    shell:
+        'fastqc -o {params.outputpath} {input}''
+            
+rule summaryReport:
+    input:
+        expand(os.path.join(config['base_dir'], config['data_dir_qc'], '{file}_fastqc.html'), file = id)
+    output:
+        os.path.join(config['base_dir'], config['data_dir_qc'], 'qc_report_fastq.html')
+    params:
+        path_qc_dir = os.path.join(config['base_dir'], config['data_dir_qc'])
+    shell:
+        "multiqc {params.path_qc_dir} --filename {output}"
